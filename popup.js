@@ -7,7 +7,25 @@ document.addEventListener('DOMContentLoaded', function() {
   loadSavedSettings();
   setupEventListeners();
   setupMessageListener();
+  
+  // Check state periodically to stay in sync
+  setInterval(checkStates, 2000);
+  
+  // Check state when popup becomes visible
+  document.addEventListener('visibilitychange', function() {
+    if (!document.hidden) {
+      checkStates();
+    }
+  });
 });
+
+function checkStates() {
+  // Only check if popup is visible
+  if (document.visibilityState === 'visible') {
+    checkTimerState();
+    checkWindowedReadingState();
+  }
+}
 
 function setupEventListeners() {
   // Font selection
@@ -17,6 +35,10 @@ function setupEventListeners() {
   document.getElementById('startTimer').addEventListener('click', startTimer);
   document.getElementById('stopTimer').addEventListener('click', stopTimer);
   document.getElementById('resetTimer').addEventListener('click', resetTimer);
+  
+  // Windowed reading controls
+  document.getElementById('enableWindowedReading').addEventListener('click', enableWindowedReading);
+  document.getElementById('disableWindowedReading').addEventListener('click', disableWindowedReading);
 }
 
 function setupMessageListener() {
@@ -35,12 +57,20 @@ function setupMessageListener() {
       document.getElementById('timerDisplay').textContent = formatTime(request.totalTime);
       
       showStatus('Timer stopped from page!', 'success');
+    } else if (request.action === 'windowedReadingDisabledFromWidget') {
+      // Windowed reading was disabled from the widget, update popup state
+      updateWindowedReadingButtons(false);
+      
+      // Clear saved state
+      chrome.storage.sync.remove(['windowedReadingState']);
+      
+      showStatus('Windowed reading disabled from page!', 'success');
     }
   });
 }
 
 function loadSavedSettings() {
-  chrome.storage.sync.get(['selectedFont', 'timerState'], function(result) {
+  chrome.storage.sync.get(['selectedFont', 'timerState', 'windowedReadingState'], function(result) {
     if (result.selectedFont) {
       document.getElementById('fontSelect').value = result.selectedFont;
     }
@@ -54,7 +84,65 @@ function loadSavedSettings() {
         startTimerInterval();
         updateTimerButtons();
       }
+    } else {
+      // Check if timer is actually running on the page
+      checkTimerState();
     }
+    
+    if (result.windowedReadingState && result.windowedReadingState.isActive) {
+      updateWindowedReadingButtons(true);
+    } else {
+      // Check if windowed reading is actually active on the page
+      checkWindowedReadingState();
+    }
+  });
+}
+
+function checkTimerState() {
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    if (tabs.length === 0) return;
+    
+    chrome.tabs.sendMessage(tabs[0].id, {
+      action: 'checkTimerState'
+    }, function(response) {
+      if (chrome.runtime.lastError) {
+        // Tab might not be ready, ignore error
+        return;
+      }
+      if (response && response.isRunning && !isRunning) {
+        // Timer is running on page but not in popup, sync the state
+        startTime = response.startTime;
+        isRunning = true;
+        updateTimerDisplay();
+        startTimerInterval();
+        updateTimerButtons();
+      } else if (response && !response.isRunning && isRunning) {
+        // Timer is not running on page but is running in popup, sync the state
+        isRunning = false;
+        clearInterval(timerInterval);
+        updateTimerButtons();
+      }
+    });
+  });
+}
+
+function checkWindowedReadingState() {
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    if (tabs.length === 0) return;
+    
+    chrome.tabs.sendMessage(tabs[0].id, {
+      action: 'checkWindowedReadingState'
+    }, function(response) {
+      if (chrome.runtime.lastError) {
+        // Tab might not be ready, ignore error
+        return;
+      }
+      if (response && response.isActive) {
+        updateWindowedReadingButtons(true);
+      } else {
+        updateWindowedReadingButtons(false);
+      }
+    });
   });
 }
 
@@ -208,6 +296,54 @@ function showStatus(message, type) {
   setTimeout(() => {
     statusDiv.style.display = 'none';
   }, 3000);
+}
+
+// Windowed Reading Functions
+function enableWindowedReading() {
+  const windowSize = document.getElementById('windowSize').value;
+  
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    chrome.tabs.sendMessage(tabs[0].id, {
+      action: 'enableWindowedReading',
+      windowSize: windowSize
+    }, function(response) {
+      if (response && response.success) {
+        updateWindowedReadingButtons(true);
+        // Save state
+        chrome.storage.sync.set({
+          windowedReadingState: {
+            isActive: true,
+            windowSize: windowSize
+          }
+        });
+        showStatus('Windowed reading enabled!', 'success');
+      } else {
+        showStatus('Failed to enable windowed reading', 'error');
+      }
+    });
+  });
+}
+
+function disableWindowedReading() {
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    chrome.tabs.sendMessage(tabs[0].id, {
+      action: 'disableWindowedReading'
+    }, function(response) {
+      if (response && response.success) {
+        updateWindowedReadingButtons(false);
+        // Clear state
+        chrome.storage.sync.remove(['windowedReadingState']);
+        showStatus('Windowed reading disabled!', 'success');
+      } else {
+        showStatus('Failed to disable windowed reading', 'error');
+      }
+    });
+  });
+}
+
+function updateWindowedReadingButtons(isEnabled) {
+  document.getElementById('enableWindowedReading').disabled = isEnabled;
+  document.getElementById('disableWindowedReading').disabled = !isEnabled;
 }
 
 

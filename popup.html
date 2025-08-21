@@ -108,6 +108,29 @@
     <button id="resetTimer">Reset Timer</button>
   </div>
 
+  <div class="section">
+    <h3>🔍 Windowed Reading</h3>
+    <p style="font-size: 12px; color: #666; margin-bottom: 10px;">Create a focus window to highlight content while shadowing everything else. Perfect for distraction-free reading!</p>
+    <button id="enableWindowedReading">Enable Windowed Reading</button>
+    <button id="disableWindowedReading" disabled>Disable Windowed Reading</button>
+    <div style="margin-top: 10px;">
+      <label style="font-size: 12px; display: block; margin-bottom: 5px;">Window Size:</label>
+      <select id="windowSize">
+        <option value="small">Small (400x300)</option>
+        <option value="medium" selected>Medium (600x400)</option>
+        <option value="large">Large (800x500)</option>
+        <option value="custom">Custom</option>
+      </select>
+    </div>
+    <div style="margin-top: 10px; font-size: 11px; color: #ccc; line-height: 1.4;">
+      <strong>Keyboard Shortcuts:</strong><br>
+      • ESC: Close windowed reading<br>
+      • Ctrl+Arrows: Move window (10px)<br>
+      • Ctrl+Shift+Arrows: Move window (50px)<br>
+      • Drag window to move • Drag near edges to scroll • Use handles to resize
+    </div>
+  </div>
+
   <div id="status" class="status" style="display: none;"></div>
 
   <script src="popup.js"></script>
