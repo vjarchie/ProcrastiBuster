@@ -1,6 +1,6 @@
-# Reading Enhancement Chrome Extension
+# 🥊 ProcrastiBuster Chrome Extension
 
-A Chrome extension designed to improve reading experience by applying Fast Fonts and providing a reading timer with celebration features.
+A powerful Chrome extension designed to **bust through procrastination** by applying Fast Fonts and providing a reading timer with celebration features. Stop procrastinating and start reading!
 
 ## Features
 
@@ -20,7 +20,7 @@ A Chrome extension designed to improve reading experience by applying Fast Fonts
 - **Celebration Popup**: Motivational popup showing total reading time when finished
 - **Session Persistence**: Timer state is saved if you accidentally close the popup
 
-## Installation
+## 🚀 Installation
 
 1. **Download the Extension**:
    - Clone or download this repository
@@ -32,10 +32,10 @@ A Chrome extension designed to improve reading experience by applying Fast Fonts
    - Click "Load unpacked"
    - Select the extension directory
 
-3. **Start Using**:
-   - Click the extension icon in your toolbar
+3. **Start Busting Procrastination**:
+   - Click the ProcrastiBuster icon in your toolbar
    - Select your preferred font and click "Apply Font"
-   - Use the timer widget on any webpage
+   - Start timing your reading sessions and watch your productivity soar!
 
 ## How to Use
 
@@ -81,7 +81,7 @@ The extension uses Fast Fonts, which are scientifically designed to improve read
 
 ### File Structure
 ```
-ReadingPlugin/
+ProcrastiBuster/
 ├── manifest.json          # Extension configuration
 ├── popup.html            # Extension popup interface
 ├── popup.js              # Popup functionality

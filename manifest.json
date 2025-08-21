@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Reading Enhancement Plugin",
+  "name": "ProcrastiBuster",
   "version": "1.0",
-  "description": "Enhance reading experience with Fast Fonts and reading timer",
+  "description": "Bust through procrastination with Fast Fonts and reading timer",
   "permissions": [
     "activeTab",
     "storage",
@@ -13,7 +13,7 @@
   ],
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Reading Enhancement"
+    "default_title": "ProcrastiBuster - Bust through procrastination!"
   },
   "content_scripts": [
     {

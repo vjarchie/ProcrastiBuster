@@ -102,7 +102,7 @@ function showTimerWidget(startTime) {
 
   timerWidget.innerHTML = `
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-      <div style="font-weight: bold;">⏱️ Reading Timer</div>
+      <div style="font-weight: bold;">🥊 ProcrastiBuster Timer</div>
       <button id="hide-timer-btn" style="
         background: none;
         border: none;
@@ -274,7 +274,7 @@ function showCelebrationPopup(totalTime) {
   `;
 
   popup.innerHTML = `
-    <h2 style="margin: 0 0 15px 0; font-size: 24px;">🎉 Congratulations! 🎉</h2>
+    <h2 style="margin: 0 0 15px 0; font-size: 24px;">🥊 Procrastination Busted! 🎉</h2>
     <p style="margin: 0 0 20px 0; font-size: 16px;">You've completed your reading session!</p>
     <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 10px; margin: 20px 0;">
       <p style="margin: 0; font-size: 18px; font-weight: bold;">Total Reading Time:</p>
