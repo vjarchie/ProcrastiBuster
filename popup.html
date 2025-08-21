@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      width: 300px;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+    }
+    .section {
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+    .section h3 {
+      margin: 0 0 10px 0;
+      color: #333;
+    }
+    select, button {
+      width: 100%;
+      padding: 8px;
+      margin: 5px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+    .timer-display {
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      margin: 10px 0;
+      padding: 10px;
+      background-color: #f5f5f5;
+      border-radius: 4px;
+    }
+    .status {
+      margin-top: 10px;
+      padding: 8px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+    .status.success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    .status.error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+  </style>
+</head>
+<body>
+  <div class="section">
+    <h3>📖 Font Selection</h3>
+    <select id="fontSelect">
+      <option value="default">Default Font</option>
+      <option value="Fast_Sans">Fast Sans</option>
+      <option value="Fast_Serif">Fast Serif</option>
+      <option value="Fast_Mono">Fast Mono</option>
+      <option value="Fast_Sans_Dotted">Fast Sans Dotted</option>
+    </select>
+    <button id="applyFont">Apply Font</button>
+  </div>
+
+  <div class="section">
+    <h3>⏱️ Reading Timer</h3>
+    <p style="font-size: 12px; color: #666; margin-bottom: 10px;">Click "Start Timer" to begin timing your reading session. A timer widget will appear on the page. You can stop the timer from either the popup or the page widget.</p>
+    <div class="timer-display" id="timerDisplay">00:00:00</div>
+    <button id="startTimer">Start Timer</button>
+    <button id="stopTimer" disabled>Stop Timer</button>
+    <button id="resetTimer">Reset Timer</button>
+  </div>
+
+  <div id="status" class="status" style="display: none;"></div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
